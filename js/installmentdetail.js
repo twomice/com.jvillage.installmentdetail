@@ -4,8 +4,8 @@
  */
 
 CRM.$(document).ready(function($){
+  // Skip all of this if there are no recurring contributions.
   if(CRM.vars.installmentdetail.rowCount > 0) {
-
     // Find recurring table, if any
     var table = CRM.$('tr.crm-entity[id^=contribution_recur-]').closest('table')
 
@@ -13,6 +13,8 @@ CRM.$(document).ready(function($){
     table.find('tbody tr.columnheader th:last').before('<th scope="col">' + ts('Financial Type') + '</td>');
     table.find('tbody tr.columnheader th:last').before('<th scope="col">' + ts('# Completed') + '</td>');
 
+    // For each row in the "recurring contributions" table, add the extra columns,
+    // with appropriate data from CRM.vars.installmentdetails.rows.
     table.find('tbody tr.crm-entity[id^=contribution_recur-]').each(function(idx, tr){
       var contribution_id = tr.id.split('-').pop()
       var financial_type, count;

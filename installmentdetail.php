@@ -10,6 +10,7 @@ require_once 'installmentdetail.civix.php';
 function installmentdetail_civicrm_pageRun(&$page) {
   if ($page->getVar('_name') == 'CRM_Contribute_Page_Tab' && $page->_action == CRM_Core_Action::BROWSE) {
 
+    // Get a list of all possible financial types.
     $api_params = array(
       'options' => array(
         'limit' => 100000
@@ -18,6 +19,8 @@ function installmentdetail_civicrm_pageRun(&$page) {
     $result = civicrm_api3('financial_type', 'get', $api_params);
     $financial_types = $result['values'];
 
+    // Get all recurring contributions for this contact, including all completed
+    // contributions for each one.
     $api_params = array(
       'sequential' => 1,
       'contact_id' => $page->_contactId,
@@ -29,6 +32,8 @@ function installmentdetail_civicrm_pageRun(&$page) {
       )
     );
     $result = civicrm_api3('contribution_recur', 'get', $api_params);
+
+    // Compile an array of details for each recurring contribution.
     $installmentdetail = array();
     foreach ($result['values'] as $value) {
       $installmentdetail[$value['id']] = array(
@@ -37,12 +42,15 @@ function installmentdetail_civicrm_pageRun(&$page) {
       );
     }
 
-    CRM_Core_Resources::singleton()->addScriptFile('com.jvillage.installmentdetail', 'js/installmentdetail.js');
+    // Assign variables to CRM.vars in JavaScript.
     $js_vars = array(
       'rowCount' => count($installmentdetail),
       'rows' => $installmentdetail,
     );
     CRM_Core_Resources::singleton()->addVars('installmentdetail', $js_vars);
+
+    // Include extension JavaScript file.
+    CRM_Core_Resources::singleton()->addScriptFile('com.jvillage.installmentdetail', 'js/installmentdetail.js');
   }
 }
 
