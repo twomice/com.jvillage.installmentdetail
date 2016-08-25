@@ -3,7 +3,7 @@
   <file>installmentdetail</file>
   <name>Jvillage Installment Detail</name>
   <description>Provides easier access to details on recurring contribution payments</description>
-  <license>AGPL-3.0</license>
+  <license>GPL-3.0</license>
   <maintainer>
     <author>Allen Shaw</author>
     <email>allen@JoineryHQ.com</email>
