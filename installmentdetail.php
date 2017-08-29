@@ -13,7 +13,7 @@ function installmentdetail_civicrm_pageRun(&$page) {
     // Get a list of all possible financial types.
     $api_params = array(
       'options' => array(
-        'limit' => 100000
+        'limit' => 0
       ),
     );
     $result = civicrm_api3('financial_type', 'get', $api_params);
@@ -25,10 +25,13 @@ function installmentdetail_civicrm_pageRun(&$page) {
       'sequential' => 1,
       'contact_id' => $page->_contactId,
       'options' => array(
-        'limit' => 100000
+        'limit' => 0
       ),
       'api.contribution.get' => array(
         'contribution_status_id' => 1,
+        'options' => array(
+          'limit' => 0
+        ),
       )
     );
     $result = civicrm_api3('contribution_recur', 'get', $api_params);
